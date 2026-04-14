@@ -1,0 +1,242 @@
+/* Container hộp chính - có thể resize */
+#dich-main-window {
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  width: 500px;
+  height: 280px;
+  min-width: 320px;
+  min-height: 160px;
+  background-color: rgba(30, 30, 34, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  font-family: 'Segoe UI', Roboto, Tahoma, sans-serif;
+  color: white;
+  z-index: 2147483647;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: opacity 0.3s ease;
+  resize: both;
+}
+
+#dich-main-window.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#dich-main-window.minimized {
+    height: 42px !important;
+    min-height: 42px !important;
+    width: auto;
+    resize: none !important;
+    border-radius: 12px;
+}
+
+#dich-main-window.minimized #dich-tools,
+#dich-main-window.minimized #dich-body {
+    display: none !important;
+}
+
+#dich-main-window.minimized::after {
+    display: none !important;
+}
+
+/* Header cho phép kéo chuột (drag) */
+#dich-header {
+  height: 42px;
+  min-height: 42px;
+  background-color: rgba(50, 50, 56, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  cursor: grab;
+  user-select: none;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+#dich-header:active {
+  cursor: grabbing;
+}
+
+.dich-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #4ade80;
+  display: inline-block;
+  margin-right: 6px;
+  box-shadow: 0 0 8px #4ade80;
+  animation: dich-pulse 1.5s infinite;
+}
+
+.dich-dot.stopped {
+  background-color: #6b7280;
+  box-shadow: none;
+  animation: none;
+}
+
+@keyframes dich-pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+#dich-header-left {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #a1a1aa;
+  gap: 8px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+#dich-header-center {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+#dich-header-right {
+  display: flex;
+  gap: 4px;
+}
+
+.dich-icon-btn {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #71717a;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.dich-icon-btn:hover {
+  background-color: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.dich-icon-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.dich-icon-btn.active-mic {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* Nút chức năng */
+.dich-btn-primary {
+  background-color: #5865F2;
+  color: white;
+  border-radius: 6px;
+  padding: 4px 10px;
+  border: none;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  gap: 4px;
+  white-space: nowrap;
+}
+.dich-btn-primary:hover {
+  background-color: #4752C4;
+}
+
+.dich-btn-danger.active {
+  background-color: #ff8a8a;
+  color: #8b0000;
+}
+.dich-btn-danger.active svg { fill: #8b0000; }
+
+/* ===== BODY: Vùng phụ đề trôi từ dưới lên ===== */
+#dich-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Đẩy nội dung xuống dưới cùng */
+  padding: 12px 16px;
+  gap: 0;
+  /* Ẩn scrollbar nhưng vẫn scroll được */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#dich-body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Container chứa tất cả dòng phụ đề */
+#dich-subtitle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Mỗi dòng phụ đề */
+.dich-sub-line {
+  animation: dich-slide-up 0.35s ease-out;
+}
+
+.dich-sub-vi {
+  font-size: 20px;
+  color: #ffffff;
+  font-weight: 500;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.dich-sub-en {
+  font-size: 17px;
+  color: #9ca3af;
+  font-style: italic;
+  line-height: 1.35;
+  margin-top: 3px;
+  word-break: break-word;
+}
+
+/* Dòng cũ mờ dần */
+.dich-sub-line.faded {
+  opacity: 0.35;
+}
+
+/* Animation trôi lên */
+@keyframes dich-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Resize handle - làm rõ hơn ở góc phải dưới */
+#dich-main-window::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  cursor: nwse-resize;
+  background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.15) 50%);
+  border-radius: 0 0 12px 0;
+}

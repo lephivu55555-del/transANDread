@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Dịch Tiếng Anh - YouTube CC Translator",
+  "version": "3.1",
+  "description": "Cửa sổ nổi đọc phụ đề YouTube CC và dịch sang tiếng Việt real-time.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_title": "Bấm vào đây để mở/đóng cửa sổ dịch"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["style.css"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
